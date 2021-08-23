@@ -1,7 +1,14 @@
 module.exports = {
     purge: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                parallel: {
+                    100: "#D7F333",
+                    200: "#040503"
+                }
+            }
+        },
         borderRadius: {
             none: "0",
             xl: "1rem",
@@ -17,6 +24,11 @@ module.exports = {
             "1/2-screen": "50vh"
         }
     },
-    variants: {},
+    variants: {
+        extend: {
+            zIndex: ["hover", "active"],
+            transitionDuration: ["hover", "focus"]
+        }
+    },
     plugins: []
 }

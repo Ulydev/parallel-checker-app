@@ -1,10 +1,42 @@
+/* Tailwind */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Fonts */
+
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
+@font-face {
+    font-family: "Avenir Next";
+    src: url("./fonts/AvenirNext-Bold.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Druk Wide Web Super";
+    src: url("./fonts/Druk Wide Web Super Regular.ttf") format("truetype");
+}
+
+.font-inconsolata {
+    font-family: "Inconsolata", sans-serif;
+}
+.font-avenir {
+    font-family: "Avenir Next", sans-serif;
+}
+.font-druk {
+    font-family: "Druk Wide Web Super", sans-serif;
+}
+
+/* HTML */
 
 html,
 body,
 #root {
     width: 100%;
     height: 100%;
+}
+
+/* Outline */
+
+* {
+    @apply outline-none;
 }

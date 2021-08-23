@@ -1,42 +1,59 @@
-import React from 'react';
-import './App.css';
+import React from "react"
 
 import { StoreProvider } from "easy-peasy"
 import store from "./state/store"
+import ParaSetChecker from "./components/ParaSetChecker"
 
-import { useEagerConnect } from './hooks/useEagerConnect';
-import { useInactiveListener } from './hooks/useInactiveListener';
-import { useWeb3React } from '@web3-react/core';
-import ActivatePrompt from './components/ActivatePrompt';
-import GlobalModal from './components/GlobalModal';
-import { BrowserRouter as Router, Route } from "react-router-dom"
-import Home from './components/Home'
+import { BsChevronDown } from "react-icons/bs"
+import ParaSetsList from "./components/ParaSetsList"
 
-const ActiveApp = () => <>
-    <h1 className="text-2xl text-white font-bold mb-4">udApp starter</h1>
-    <Router>
-        <Route path="/" exact component={Home} />
-    </Router>
-    <GlobalModal />
-</>
-
-function App() {
-
-    const { active } = useWeb3React()
-    const triedEager = useEagerConnect()
-    useInactiveListener(!triedEager)
-
+const App = () => {
     return (
         <StoreProvider store={store}>
-            <div className="relative w-full min-h-full overflow-x-hidden overflow-y-auto flex flex-col items-center justify-center py-4 bg-black">
-                { active ? (
-                    <ActiveApp />
-                ) : (
-                    <ActivatePrompt />
-                ) }
+            <a
+                className="absolute top-0 left-0 z-10 flex flex-row items-center justify-center w-12 h-12 mt-4 ml-4 text-4xl font-bold text-black transition duration-300 rounded-full opacity-50 bg-gradient-to-br from-parallel-100 to-parallel-200 font-avenir hover:opacity-100"
+                href="https://uly.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <span className="flex -mt-1">u</span>
+            </a>
+            <div className="flex flex-col items-center w-full p-4 py-32 bg-parallel-200">
+                <img
+                    src="https://storage.googleapis.com/static-assets.parallelnft.com/site/Parallel_Landing_Page%20copy.gif"
+                    alt="gif"
+                    className="absolute top-0 mt-12 transform -translate-x-1/2 opacity-75 h-80 left-1/2"
+                />
+                <div className="relative z-10 flex flex-col items-center w-full max-w-lg">
+                    <span className="text-4xl text-white uppercase md:text-6xl font-druk">
+                        Parallel
+                    </span>
+                    <span className="text-xl text-white uppercase md:text-3xl font-druk">
+                        ParaSet Checker
+                    </span>
+                    <span className="w-full mt-8 text-center text-white font-inconsolata max-w-prose">
+                        Enter your address below to check your completed
+                        ParaSets.
+                    </span>
+                    <div className="w-full mt-32">
+                        <ParaSetChecker />
+                    </div>
+                    <div className="flex flex-col items-center w-full mt-16">
+                        <span className="mb-16 text-white font-inconsolata">
+                            ...or check all ParaSets to collect{" "}
+                            <BsChevronDown className="inline-block font-bold text-parallel-100 animate-bounce" />
+                        </span>
+                        <ParaSetsList />
+                    </div>
+                    <span className="mt-32 text-center opacity-50 font-inconsolata text-parallel-100">
+                        Made by ulydev.eth
+                        <br />
+                        All credits to Parallel team
+                    </span>
+                </div>
             </div>
         </StoreProvider>
-    );
+    )
 }
 
-export default App;
+export default App
