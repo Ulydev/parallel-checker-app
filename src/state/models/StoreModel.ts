@@ -1,18 +1,15 @@
-import { action, Action, persist } from "easy-peasy"
-import modalModel, { ModalModel } from "./ModalModel"
+import { action, Action } from "easy-peasy"
 
 export interface StoreModel {
-    firstLaunch: boolean
-    launch: Action<StoreModel>
-
-    modal: ModalModel
+    cardsBalances: Record<string, number> | undefined
+    setCardsBalances: Action<StoreModel, Record<string, number> | undefined>
 }
 
 const storeModel: StoreModel = {
-    firstLaunch: true,
-    launch: action((state) => { state.firstLaunch = false }),
-
-    modal: modalModel
+    cardsBalances: undefined,
+    setCardsBalances: action((store, cardsBalances) => {
+        store.cardsBalances = cardsBalances
+    })
 }
 
-export default persist(storeModel, { blacklist: ["modal"] })
+export default storeModel
