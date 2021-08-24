@@ -2,7 +2,9 @@ import { Provider } from "@ethersproject/abstract-provider"
 import { BigNumber } from "ethers"
 import { ParallelToken__factory } from "./ParallelToken__factory"
 
-const PARALLEL_TOKEN_ADDRESS = "0x76be3b62873462d2142405439777e971754e8e77"
+export const PARALLEL_TOKEN_ADDRESS =
+    "0x76be3b62873462d2142405439777e971754e8e77"
+export const PARASET_SNAPSHOT_TIMESTAMP = 1630011600
 
 const MAX_CARDS_PER_BATCH = 30
 

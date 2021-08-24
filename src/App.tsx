@@ -6,6 +6,7 @@ import ParaSetChecker from "./components/ParaSetChecker"
 
 import { BsChevronDown } from "react-icons/bs"
 import ParaSetsList from "./components/ParaSetsList"
+import SnapshotCountdown from "components/SnapshotCountdown"
 
 const App = () => {
     return (
@@ -36,6 +37,9 @@ const App = () => {
                         ParaSets.
                     </span>
                     <div className="w-full mt-32">
+                        <div className="px-1 mb-2">
+                            <SnapshotCountdown />
+                        </div>
                         <ParaSetChecker />
                     </div>
                     <div className="flex flex-col items-center w-full mt-16">
