@@ -37,7 +37,9 @@ const SetCompletionView: FunctionComponent<{
                               ? ` ${completion.completed}`
                               : ""
                       }Completed`
-                    : `${completion.missingCardsCount} missing cards`}
+                    : `${completion.missingCardsCount} missing card${
+                          completion.missingCardsCount > 1 ? "s" : ""
+                      }`}
             </span>
         </AppearDiv>
     )
