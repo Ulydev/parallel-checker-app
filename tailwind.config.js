@@ -27,7 +27,8 @@ module.exports = {
     variants: {
         extend: {
             zIndex: ["hover", "active"],
-            transitionDuration: ["hover", "focus"]
+            transitionDuration: ["hover", "focus"],
+            translate: ["active", "group-hover"]
         }
     },
     plugins: []

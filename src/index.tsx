@@ -15,12 +15,11 @@ ReactModal.setAppElement("#root")
 const getLibrary = (provider: any) => new Web3Provider(provider)
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Web3ReactProvider getLibrary={getLibrary}>
-            <App />
-        </Web3ReactProvider>
-    </React.StrictMode>,
-    document.getElementById("root")
+    /*<React.StrictMode>*/
+    <Web3ReactProvider getLibrary={getLibrary}>
+        <App />
+    </Web3ReactProvider>,
+    /*</React.StrictMode>*/ document.getElementById("root")
 )
 
 // If you want your app to work offline and load faster, you can change
