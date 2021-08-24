@@ -32,6 +32,9 @@ const getAllCardsBalances = async (
     return balanceByCardId
 }
 
+const isENSDomain = (address: string) =>
+    address.includes(".eth") && address.split(".eth")[0].length > 0
+
 const ParaSetChecker: FunctionComponent<{}> = () => {
     const cardsBalances = useStoreState((store) => store.cardsBalances)
     const setCardsBalances = useStoreActions(
@@ -41,7 +44,8 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
     const [error, setError] = useState<string>()
 
     const [account, setAccount] = useState<string>()
-    const accountValid = ethers.utils.isAddress(account || "")
+    const accountValid =
+        isENSDomain(account || "") || ethers.utils.isAddress(account || "")
 
     const loadCardsBalances = async () => {
         if (!account) return
