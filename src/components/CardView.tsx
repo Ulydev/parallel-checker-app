@@ -10,12 +10,12 @@ import { FaEthereum } from "react-icons/fa"
 import { IoIosCheckmark } from "react-icons/io"
 
 import { PARALLEL_TOKEN_ADDRESS } from "data/utils"
-import { formatEther } from "ethers/lib/utils"
 
 const CardView: FunctionComponent<{
     card: typeof cards[keyof typeof cards]
+    price?: number
     owned: number
-}> = ({ card, owned }) => {
+}> = ({ card, owned, price }) => {
     const url = `https://opensea.io/assets/${PARALLEL_TOKEN_ADDRESS}/${card.token_id}`
     return (
         <a href={url} rel="noopener noreferrer" target="_blank">
@@ -39,11 +39,11 @@ const CardView: FunctionComponent<{
                             borderRadius: "0.2rem"
                         }}
                     />
-                    {card.last_sale ? (
+                    {price ? (
                         <div className="absolute top-0 left-0 z-10 flex flex-row items-center mt-1 ml-1 text-base font-bold text-gray-100 bg-opacity-75 rounded-full bg-parallel-200 font-inconsolata">
                             <FaEthereum className="ml-1 mr-0.5 text-xs" />
                             <span className="mr-1.5 text-xs">
-                                {formatEther(card.last_sale.total_price)}
+                                {price.toPrecision(2)}
                             </span>
                         </div>
                     ) : null}
