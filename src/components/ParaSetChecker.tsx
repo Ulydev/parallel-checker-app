@@ -122,12 +122,13 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
                 {Object.keys(sets).map((setName, i) =>
                     !!setsCompletion[setName] ? (
                         <SetCompletionView
+                            key={i}
                             i={i}
                             setName={setName}
                             completion={setsCompletion[setName]}
                         />
                     ) : (
-                        <span>&nbsp;</span>
+                        <span key={i}>&nbsp;</span>
                     )
                 )}
             </div>

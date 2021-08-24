@@ -19,6 +19,7 @@ const ParaSetView: FunctionComponent<{ set: Set<string>; setName: string }> = ({
                     .map((tokenId) => cards[tokenId])
                     .map((card) => (
                         <CardView
+                            key={card.token_id}
                             card={card}
                             owned={
                                 cardsBalances ? cardsBalances[card.token_id] : 0
@@ -34,7 +35,11 @@ const ParaSetsList: FunctionComponent<{}> = () => {
     return (
         <div className="flex flex-col w-full space-y-8">
             {Object.keys(sets).map((setName) => (
-                <ParaSetView setName={setName} set={(sets as any)[setName]} />
+                <ParaSetView
+                    key={setName}
+                    setName={setName}
+                    set={(sets as any)[setName]}
+                />
             ))}
         </div>
     )
