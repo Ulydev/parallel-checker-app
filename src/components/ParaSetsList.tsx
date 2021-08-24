@@ -3,50 +3,27 @@ import React, { FunctionComponent } from "react"
 import { sets } from "../data/sets"
 import { cards } from "../data/cards"
 
-import styled, { keyframes } from "styled-components"
-
-const Card = styled.img`
-    :hover {
-        animation: ${keyframes`
-            from: { transform: scale(1); }
-            to { transform: scale(1.2) translateY(-10%); }
-        `} 0.2s forwards;
-    }
-`
-
-const CardView: FunctionComponent<{
-    card: typeof cards[keyof typeof cards]
-}> = ({ card }) => {
-    return (
-        <div className="flex flex-col items-center w-full space-y-2">
-            <a
-                href={card.external_link}
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                <Card
-                    src={card.image_thumbnail_url}
-                    alt={card.token_id}
-                    className="relative hover:z-10"
-                    style={{ willChange: "transform" }}
-                />
-            </a>
-        </div>
-    )
-}
+import { useStoreState } from "state/hooks"
+import CardView from "./CardView"
 
 const ParaSetView: FunctionComponent<{ set: Set<string>; setName: string }> = ({
     set,
     setName
 }) => {
+    const cardsBalances = useStoreState((state) => state.cardsBalances)
     return (
         <div className="flex flex-col items-start space-y-2">
             <span className="text-white uppercase font-druk">{setName}</span>
-            <div className="grid w-full grid-cols-6">
+            <div className="grid w-full grid-cols-6 gap-2.5">
                 {Array.from(set)
                     .map((tokenId) => cards[tokenId])
                     .map((card) => (
-                        <CardView card={card} />
+                        <CardView
+                            card={card}
+                            owned={
+                                cardsBalances ? cardsBalances[card.token_id] : 0
+                            }
+                        />
                     ))}
             </div>
         </div>

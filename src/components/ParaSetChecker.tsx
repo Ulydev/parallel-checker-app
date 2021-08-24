@@ -9,6 +9,7 @@ import { providers } from "@0xsequence/multicall"
 import { useMemo } from "react"
 import { sets } from "data/sets"
 import SetCompletionView, { SetCompletion } from "./SetCompletionView"
+import { useStoreActions, useStoreState } from "state/hooks"
 
 const getAllCardsBalances = async (
     account: string
@@ -32,7 +33,10 @@ const getAllCardsBalances = async (
 }
 
 const ParaSetChecker: FunctionComponent<{}> = () => {
-    const [cardsBalances, setCardsBalances] = useState<Record<string, number>>()
+    const cardsBalances = useStoreState((store) => store.cardsBalances)
+    const setCardsBalances = useStoreActions(
+        (actions) => actions.setCardsBalances
+    )
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string>()
 
@@ -65,9 +69,15 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
                     .map((tokenId) => cardsBalances[tokenId] > 0)
                     .map((b) => (b === true ? 0 : 1) as number)
                     .reduce((a, b) => a + b)
+                const completed =
+                    missingCardsCount > 0
+                        ? 0
+                        : Array.from(set)
+                              .map((tokenId) => cardsBalances[tokenId])
+                              .reduce((a, b) => Math.min(a, b))
                 result[setName] = {
                     missingCardsCount,
-                    completed: missingCardsCount === 0
+                    completed
                 }
             })
         }
@@ -98,16 +108,17 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
             </div>
             <span
                 className={classNames(
-                    "text-parallel-100 text-center mt-8 text-sm",
+                    "text-parallel-100 text-center font-inconsolata mt-8 text-sm",
                     loading && "animate-pulse"
                 )}
             >
                 {message}
             </span>
             <div className="flex flex-col mt-8 space-y-4 text-sm">
-                {Object.keys(sets).map((setName) =>
+                {Object.keys(sets).map((setName, i) =>
                     !!setsCompletion[setName] ? (
                         <SetCompletionView
+                            i={i}
                             setName={setName}
                             completion={setsCompletion[setName]}
                         />
