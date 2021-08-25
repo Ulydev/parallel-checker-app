@@ -10,7 +10,7 @@ export const PARALLEL_TOKEN_ADDRESS =
 export const PARASET_SNAPSHOT_TIMESTAMP = 1630011600
 
 const MAX_CARDS_PER_BATCH = 30
-const MAX_CARDS_PER_OPENSEA_REQUEST = 50
+const MAX_CARDS_PER_OPENSEA_REQUEST = 30
 
 export const getCardsBalancesBatch = (
     account: string,
