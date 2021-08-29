@@ -1,16 +1,17 @@
-import React from "react"
-
 import { StoreProvider } from "easy-peasy"
-import store from "./state/store"
-import ParaSetChecker from "./components/ParaSetChecker"
-
-import { BsChevronDown } from "react-icons/bs"
-import ParaSetsList from "./components/ParaSetsList"
-import SnapshotCountdown from "components/SnapshotCountdown"
+import React from "react"
 import { useEffect } from "react"
+import { BsChevronDown } from "react-icons/bs"
+
 import { useStoreActions } from "state/hooks"
-import { getCardsPrices } from "data/utils"
+import store from "state/store"
+
 import { sets } from "data/sets"
+import { getCardsPrices } from "data/utils"
+
+import ParaSetChecker from "components/setchecker/ParaSetChecker"
+import ParaSetsList from "components/setchecker/ParaSetsList"
+import SnapshotCountdown from "components/setchecker/SnapshotCountdown"
 
 const CardsPricesLoader = () => {
     const setCardsPrices = useStoreActions((actions) => actions.setCardsPrices)

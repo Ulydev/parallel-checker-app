@@ -1,14 +1,14 @@
+import { Web3Provider } from "@ethersproject/providers"
+import { Web3ReactProvider } from "@web3-react/core"
 import React from "react"
 import ReactDOM from "react-dom"
-import App from "./App"
-import * as serviceWorker from "./serviceWorker"
-
-import "./index.css"
 import "react-grid-layout/css/styles.css"
-import "react-resizable/css/styles.css"
 import ReactModal from "react-modal"
-import { Web3ReactProvider } from "@web3-react/core"
-import { Web3Provider } from "@ethersproject/providers"
+import "react-resizable/css/styles.css"
+
+import App from "./App"
+import "./index.css"
+import * as serviceWorker from "./serviceWorker"
 
 ReactModal.setAppElement("#root")
 

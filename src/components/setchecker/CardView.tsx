@@ -1,14 +1,10 @@
-import React, { FunctionComponent } from "react"
-
-import Tilt from "react-parallax-tilt"
-
-import { cards } from "../data/cards"
-
 import classnames from "classnames"
-
+import React, { FunctionComponent } from "react"
 import { FaEthereum } from "react-icons/fa"
 import { IoIosCheckmark } from "react-icons/io"
+import Tilt from "react-parallax-tilt"
 
+import { cards } from "data/cards"
 import { PARALLEL_TOKEN_ADDRESS } from "data/utils"
 
 const CardView: FunctionComponent<{
