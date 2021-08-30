@@ -1,8 +1,15 @@
 import { StoreProvider } from "easy-peasy"
+import CardGeneratorPage from "pages/CardGeneratorPage"
 import SetCheckerPage from "pages/SetCheckerPage"
 import React from "react"
 import { useEffect } from "react"
 import { BsChevronDown } from "react-icons/bs"
+import {
+    BrowserRouter as Router,
+    Redirect,
+    Route,
+    Switch
+} from "react-router-dom"
 
 import { useStoreActions } from "state/hooks"
 import store from "state/store"
@@ -35,14 +42,32 @@ const CardsPricesLoader = () => {
 const App = () => {
     return (
         <StoreProvider store={store}>
-            <CardsPricesLoader />
-            <div className="flex flex-col items-center w-full max-w-4xl mx-auto">
-                <Navbar />
-                <PageContentContainer>
-                    <SetCheckerPage />
-                </PageContentContainer>
+            <Router>
+                <CardsPricesLoader />
+                <div className="flex flex-col items-center w-full max-w-4xl mx-auto">
+                    <Navbar />
+                    <PageContentContainer>
+                        <Switch>
+                            <Route
+                                path="/"
+                                exact
+                                component={() => <Redirect to="/parasets" />}
+                            />
+                            <Route
+                                path="/parasets"
+                                exact
+                                component={SetCheckerPage}
+                            />
+                            <Route
+                                path="/cardgen"
+                                exact
+                                component={CardGeneratorPage}
+                            />
+                        </Switch>
+                    </PageContentContainer>
+                </div>
                 <Footer />
-            </div>
+            </Router>
         </StoreProvider>
     )
 }
