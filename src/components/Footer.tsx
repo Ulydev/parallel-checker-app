@@ -1,7 +1,6 @@
 import React from "react"
 
 import PageDivider from "./PageDivider"
-import ParallelLogo from "./ParallelLogo"
 import ParallelToolsLink from "./ParallelToolsLink"
 
 const Footer = () => (

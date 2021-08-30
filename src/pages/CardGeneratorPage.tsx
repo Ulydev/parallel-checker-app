@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react"
 
 import PageHeader from "components/PageHeader"
 
-const CardGeneratorPage: FunctionComponent<{}> = ({}) => {
+const CardGeneratorPage: FunctionComponent<{}> = () => {
     return (
         <div className="flex flex-col w-full text-white">
             <PageHeader

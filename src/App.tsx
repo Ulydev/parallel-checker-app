@@ -3,7 +3,6 @@ import CardGeneratorPage from "pages/CardGeneratorPage"
 import SetCheckerPage from "pages/SetCheckerPage"
 import React from "react"
 import { useEffect } from "react"
-import { BsChevronDown } from "react-icons/bs"
 import {
     BrowserRouter as Router,
     Redirect,

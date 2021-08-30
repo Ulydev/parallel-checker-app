@@ -2,7 +2,6 @@ import React from "react"
 import { NavLink as _NavLink } from "react-router-dom"
 import styled from "styled-components"
 
-import ParallelLogo from "./ParallelLogo"
 import ParallelToolsLink from "./ParallelToolsLink"
 
 const NavLink = styled(_NavLink)`
