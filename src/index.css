@@ -15,6 +15,21 @@
     font-family: "Druk Wide Web Super";
     src: url("./fonts/Druk Wide Web Super Regular.ttf") format("truetype");
 }
+@font-face {
+    font-family: "HK Grotesk";
+    src: url("./fonts/HKGrotesk/HKGrotesk-Regular.ttf") format("truetype");
+    font-weight: normal;
+}
+@font-face {
+    font-family: "HK Grotesk";
+    src: url("./fonts/HKGrotesk/HKGrotesk-Bold.ttf") format("truetype");
+    font-weight: bold;
+}
+@font-face {
+    font-family: "HK Grotesk";
+    src: url("./fonts/HKGrotesk/HKGrotesk-Light.ttf") format("truetype");
+    font-weight: light;
+}
 
 .font-inconsolata {
     font-family: "Inconsolata", sans-serif;
@@ -24,6 +39,9 @@
 }
 .font-druk {
     font-family: "Druk Wide Web Super", sans-serif;
+}
+.font-grotesk {
+    font-family: "HK Grotesk", sans-serif;
 }
 
 /* HTML */
