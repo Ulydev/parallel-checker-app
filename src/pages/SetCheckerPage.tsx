@@ -13,7 +13,7 @@ const SetCheckerPage = () => (
             description="Enter your address below to check your completed ParaSets."
         />
         <div className="relative z-10 flex flex-col items-center w-full max-w-lg">
-            <div className="w-full mt-32">
+            <div className="w-full">
                 <div className="px-1 mb-2">
                     <SnapshotCountdown />
                 </div>

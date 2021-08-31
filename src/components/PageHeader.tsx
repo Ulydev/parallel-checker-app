@@ -42,7 +42,7 @@ const PageHeader: FunctionComponent<{ title: string; description: string }> = ({
     description
 }) => {
     return (
-        <div className="relative flex flex-col items-center w-full max-w-lg mx-auto">
+        <div className="relative flex flex-col items-center w-full max-w-lg mx-auto mb-32">
             <AppearImg
                 src="https://storage.googleapis.com/static-assets.parallelnft.com/site/Parallel_Landing_Page%20copy.gif"
                 alt="gif"

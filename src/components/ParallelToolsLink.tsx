@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import React, { FunctionComponent } from "react"
+import { NavLink } from "react-router-dom"
 
 import ParallelLogo from "./ParallelLogo"
 
@@ -7,7 +8,10 @@ const ParallelToolsLink: FunctionComponent<{ mode: "light" | "dark" }> = ({
     mode
 }) => {
     return (
-        <a href="/" className="flex flex-row items-center h-12 space-x-2 group">
+        <NavLink
+            to="/"
+            className="flex flex-row items-center h-12 space-x-2 group"
+        >
             <span
                 style={{ willChange: "transform" }}
                 className={classNames(
@@ -33,7 +37,7 @@ const ParallelToolsLink: FunctionComponent<{ mode: "light" | "dark" }> = ({
             >
                 TOOLS
             </span>
-        </a>
+        </NavLink>
     )
 }
 
