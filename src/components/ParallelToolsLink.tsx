@@ -15,7 +15,7 @@ const ParallelToolsLink: FunctionComponent<{ mode: "light" | "dark" }> = ({
             <span
                 style={{ willChange: "transform" }}
                 className={classNames(
-                    "font-bold group-hover:text-opacity-100",
+                    "font-bold group-hover:text-opacity-100 hidden sm:block",
                     "transition duration-200 transform group-hover:-translate-x-0.5 group-hover:-translate-y-1.5 font-druk",
                     mode === "light"
                         ? "text-white text-opacity-25"
@@ -28,7 +28,7 @@ const ParallelToolsLink: FunctionComponent<{ mode: "light" | "dark" }> = ({
             <span
                 style={{ willChange: "transform" }}
                 className={classNames(
-                    "font-bold group-hover:text-opacity-100",
+                    "font-bold group-hover:text-opacity-100 hidden sm:block",
                     "transition duration-200 transform group-hover:translate-x-0.5 group-hover:translate-y-1.5 font-druk",
                     mode === "light"
                         ? "text-white text-opacity-25"

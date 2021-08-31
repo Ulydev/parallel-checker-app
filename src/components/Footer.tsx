@@ -8,7 +8,7 @@ const Footer = () => (
         <PageDivider className="text-parallel-200" />
         <div className="flex flex-col items-center w-full max-w-4xl mx-auto mt-4">
             <ParallelToolsLink mode="dark" />
-            <div className="flex flex-col items-center mt-8 text-opacity-50 font-inconsolata text-parallel-200">
+            <div className="flex flex-col items-center px-4 mt-8 text-center text-opacity-50 lg:px-0 font-inconsolata text-parallel-200">
                 <span>
                     parallel.tools is a community website made by{" "}
                     <a

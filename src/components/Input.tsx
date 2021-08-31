@@ -1,18 +1,45 @@
 import React, { FunctionComponent, HTMLProps } from "react"
+import Dropzone from "react-dropzone"
 
-const Input: FunctionComponent<HTMLProps<HTMLInputElement>> = ({
-    label,
-    ...props
-}) => {
-    return (
-        <div className="flex flex-row items-center pl-4 space-x-4 overflow-hidden font-bold uppercase border-l-2 rounded-sm shadow-md bg-opacity-5 bg-parallel-100 border-parallel-100">
-            <span className="text-xs text-gray-200">{label}</span>
-            <input
-                className="w-full px-4 py-3 bg-transparent bg-black bg-opacity-100 rounded-sm shadow-inner"
-                {...props}
-            />
-        </div>
-    )
+import InputContainer from "./InputContainer"
+
+type InputProps = HTMLProps<HTMLInputElement>
+
+const inputClassName =
+    "w-full px-4 py-3 bg-black rounded-sm shadow-inner text-base text-gray-200 placeholder-gray-600"
+
+const Input: FunctionComponent<
+    Omit<InputProps, "type"> & { type: InputProps["type"] | "image" }
+> = ({ label, ...props }) => {
+    const element = (() => {
+        switch (props.type) {
+            case "image":
+                return (
+                    <Dropzone
+                        accept="image/*"
+                        maxFiles={1}
+                        onDrop={([file]) =>
+                            props.onChange && props.onChange(file as any)
+                        }
+                    >
+                        {({ getRootProps, getInputProps }) => (
+                            <div className={inputClassName} {...getRootProps()}>
+                                <input {...getInputProps()} />
+                                <p className="font-normal normal-case">
+                                    {props.value
+                                        ? (props.value as any).name
+                                        : "Drag image here or click"}
+                                </p>
+                            </div>
+                        )}
+                    </Dropzone>
+                )
+            default:
+                return <input className={inputClassName} {...props} />
+        }
+    })()
+
+    return <InputContainer label={label || ""}>{element}</InputContainer>
 }
 
 export default Input
