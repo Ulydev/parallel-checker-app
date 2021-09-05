@@ -21,6 +21,7 @@
         "@web3-react/injected-connector": "^6.0.7",
         "classnames": "^2.2.6",
         "easy-peasy": "^3.3.1",
+        "easyqrcodejs": "^4.4.6",
         "ethers": "^5.0.14",
         "limiter": "^2.1.0",
         "lodash": "^4.17.20",

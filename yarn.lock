@@ -5294,6 +5294,11 @@ easy-peasy@^3.3.1:
     symbol-observable "^1.2.0"
     ts-toolbelt "^6.1.6"
 
+easyqrcodejs@^4.4.6:
+  version "4.4.6"
+  resolved "https://registry.yarnpkg.com/easyqrcodejs/-/easyqrcodejs-4.4.6.tgz#3f6c6b4b97e5b9a2a20620fd1c03be96e941761c"
+  integrity sha512-LP24ScT1io86Sv6Cp1rKLCDBmSRBbnqWsF32qfykWV3ojW6iVUN2paaiaUy5tjJ/dAw+YCJ/qkrfy7MrAihY/A==
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
