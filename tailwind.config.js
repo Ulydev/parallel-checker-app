@@ -7,10 +7,14 @@ module.exports = {
                     100: "#D7F333",
                     200: "#040503"
                 }
+            },
+            height: {
+                "36rem": "36rem"
             }
         },
         borderRadius: {
             none: "0",
+            sm: "0.25rem",
             xl: "1rem",
             "2xl": "2rem",
             full: "999999px"
@@ -27,8 +31,10 @@ module.exports = {
     variants: {
         extend: {
             zIndex: ["hover", "active"],
-            transitionDuration: ["hover", "focus"],
-            translate: ["active", "group-hover"]
+            transitionDuration: ["hover", "focus", "group-hover"],
+            translate: ["active", "group-hover"],
+            rotate: ["active", "group-hover"],
+            scale: ["group-hover"]
         }
     },
     plugins: []

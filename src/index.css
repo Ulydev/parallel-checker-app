@@ -15,6 +15,21 @@
     font-family: "Druk Wide Web Super";
     src: url("./fonts/Druk Wide Web Super Regular.ttf") format("truetype");
 }
+@font-face {
+    font-family: "HK Grotesk";
+    src: url("./fonts/HKGrotesk/HKGrotesk-Regular.ttf") format("truetype");
+    font-weight: normal;
+}
+@font-face {
+    font-family: "HK Grotesk";
+    src: url("./fonts/HKGrotesk/HKGrotesk-Bold.ttf") format("truetype");
+    font-weight: bold;
+}
+@font-face {
+    font-family: "HK Grotesk";
+    src: url("./fonts/HKGrotesk/HKGrotesk-Light.ttf") format("truetype");
+    font-weight: light;
+}
 
 .font-inconsolata {
     font-family: "Inconsolata", sans-serif;
@@ -25,6 +40,9 @@
 .font-druk {
     font-family: "Druk Wide Web Super", sans-serif;
 }
+.font-grotesk {
+    font-family: "HK Grotesk", sans-serif;
+}
 
 /* HTML */
 
@@ -33,10 +51,31 @@ body,
 #root {
     width: 100%;
     height: 100%;
+    @apply bg-parallel-200;
 }
 
 /* Outline */
 
 * {
     @apply outline-none;
+}
+
+/* Popup transition */
+
+.popup-enter {
+    opacity: 0;
+    transform: scale(0.95);
+}
+.popup-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 200ms, transform 200ms;
+}
+.popup-exit {
+    opacity: 1;
+}
+.popup-exit-active {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 200ms, transform 200ms;
 }

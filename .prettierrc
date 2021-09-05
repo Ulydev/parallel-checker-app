@@ -2,5 +2,16 @@
     "trailingComma": "none",
     "tabWidth": 4,
     "semi": false,
-    "singleQuote": false
+    "singleQuote": false,
+    "importOrder": [
+        "^@*/(.*)$",
+        "^state/(.*)$",
+        "^hooks/(.*)$",
+        "^web3/(.*)$",
+        "^data/(.*)$",
+        "^classes/(.*)$",
+        "^components/(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true
 }

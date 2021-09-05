@@ -1,12 +1,13 @@
 import React, { FunctionComponent } from "react"
-
-import { sets } from "../data/sets"
-import { cards } from "../data/cards"
-
-import { useStoreState } from "state/hooks"
-import CardView from "./CardView"
 import { useMemo } from "react"
 import { FaEthereum } from "react-icons/fa"
+
+import { useStoreState } from "state/hooks"
+
+import { cards } from "data/cards"
+import { sets } from "data/sets"
+
+import CardView from "./CardView"
 
 const ParaSetView: FunctionComponent<{ set: Set<string>; setName: string }> = ({
     set,

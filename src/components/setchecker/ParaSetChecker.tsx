@@ -1,15 +1,19 @@
+import { providers } from "@0xsequence/multicall"
 import classNames from "classnames"
 import { ethers } from "ethers"
 import React, { FunctionComponent } from "react"
 import { useState } from "react"
-import { cards } from "../data/cards"
-import { getCardsBalances } from "../data/utils"
-
-import { providers } from "@0xsequence/multicall"
 import { useMemo } from "react"
-import { sets } from "data/sets"
-import SetCompletionView, { SetCompletion } from "./SetCompletionView"
+
 import { useStoreActions, useStoreState } from "state/hooks"
+
+import { cards } from "data/cards"
+import { sets } from "data/sets"
+import { getCardsBalances } from "data/utils"
+
+import SetCompletionView, {
+    SetCompletion
+} from "components/setchecker/SetCompletionView"
 
 const getAllCardsBalances = async (
     account: string

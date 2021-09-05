@@ -1,6 +1,7 @@
-import { PARASET_SNAPSHOT_TIMESTAMP } from "data/utils"
 import React, { FunctionComponent } from "react"
 import { useEffect, useReducer } from "react"
+
+import { PARASET_SNAPSHOT_TIMESTAMP } from "data/utils"
 
 const useCountdown = (
     timestamp: number | null,
