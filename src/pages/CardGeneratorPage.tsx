@@ -1,4 +1,3 @@
-import classNames from "classnames"
 import QRCode from "easyqrcodejs"
 import React, { FunctionComponent, useCallback, useMemo } from "react"
 import { useRef } from "react"
@@ -20,6 +19,7 @@ import {
     rarities
 } from "data/types"
 
+import Button from "components/Button"
 import Input from "components/Input"
 import InputContainer from "components/InputContainer"
 import PageHeader from "components/PageHeader"
@@ -270,7 +270,7 @@ const CardGeneratorPage: FunctionComponent<{}> = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null)
 
     const DownloadImageButton = (mobile: boolean) => (
-        <button
+        <Button
             onClick={() => {
                 const image =
                     canvasRef.current &&
@@ -279,16 +279,10 @@ const CardGeneratorPage: FunctionComponent<{}> = () => {
                         .replace("image/png", "image/octet-stream")
                 if (image) window.location.href = image
             }}
-            className={classNames(
-                "relative py-3 overflow-hidden font-bold uppercase border-b-2 rounded-sm shadow-md group border-parallel-100 bg-opacity-5 bg-parallel-100",
-                mobile ? "lg:hidden w-full" : "hidden lg:block mt-auto"
-            )}
+            className={mobile ? "lg:hidden w-full" : "hidden lg:block mt-auto"}
         >
-            <span className="relative z-10 text-gray-200 transition duration-200 group-hover:text-parallel-200 group-hover:text-opacity-75">
-                Download image
-            </span>
-            <div className="absolute top-0 left-0 w-full h-full transition duration-200 origin-bottom transform scale-y-0 bg-parallel-100 group-hover:scale-y-100" />
-        </button>
+            Download image
+        </Button>
     )
 
     return (

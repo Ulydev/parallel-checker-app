@@ -11,6 +11,8 @@ import { cards } from "data/cards"
 import { sets } from "data/sets"
 import { getCardsBalances } from "data/utils"
 
+import Button from "components/Button"
+import Input from "components/Input"
 import SetCompletionView, {
     SetCompletion
 } from "components/setchecker/SetCompletionView"
@@ -93,26 +95,22 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
     }, [cardsBalances])
 
     return (
-        <div className="flex flex-col">
-            <div className="flex flex-row items-center space-x-4">
-                <input
-                    className="flex-1 px-4 py-2 text-sm placeholder-gray-400 bg-gray-100 bg-opacity-90 text-parallel-200 rounded-2xl"
+        <div className="flex flex-col w-full">
+            <div className="flex flex-row items-center w-full">
+                <Input
+                    type="text"
+                    label="Address"
+                    containerClassName="flex-1"
                     placeholder="0x0000...0000"
-                    onChange={(e) => setAccount(e.target.value)}
+                    onChange={(e) => setAccount((e.target as any).value)}
                 />
-                <button
+                <Button
+                    className="rounded-l-none"
                     onClick={loadCardsBalances}
-                    className={classNames(
-                        "px-8 py-2 text-sm transition duration-300 opacity-75 text-parallel-200 rounded-2xl font-inconsolata",
-                        "transition duration-300",
-                        accountValid
-                            ? "bg-parallel-100 hover:opacity-100"
-                            : "bg-gray-400"
-                    )}
                     disabled={!accountValid}
                 >
                     Check
-                </button>
+                </Button>
             </div>
             <span
                 className={classNames(
