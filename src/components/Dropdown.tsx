@@ -1,5 +1,5 @@
 import classnames from "classnames"
-import React, { FunctionComponent, ReactElement, useRef, useState } from "react"
+import React, { FunctionComponent, useRef, useState } from "react"
 import { CSSTransition } from "react-transition-group"
 
 import { useOnClickOutside } from "hooks/useOnClickOutside"

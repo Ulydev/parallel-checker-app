@@ -1,29 +1,30 @@
-import { resolve } from "dns"
+import classNames from "classnames"
+import QRCode from "easyqrcodejs"
 import React, { FunctionComponent, useMemo } from "react"
 import { useRef } from "react"
 import { useEffect } from "react"
 import { useState } from "react"
-import { FaRegQuestionCircle } from "react-icons/fa"
 import Tilt from "react-parallax-tilt"
 import styled, { keyframes } from "styled-components"
 
 import {
     cardDimensions,
+    cardGradients,
     CardProps,
     CardRarity,
     CardType,
+    Dimensions,
     Parallel,
     parallelColors,
-    parallels
+    parallels,
+    rarities
 } from "data/types"
 
-import Dropdown from "components/Dropdown"
 import Input from "components/Input"
 import InputContainer from "components/InputContainer"
 import PageHeader from "components/PageHeader"
 import ParallelLogo from "components/ParallelLogo"
 import Select from "components/Select"
-import Toggle from "components/Toggle"
 
 const defaultCardProps: CardProps = {
     image: undefined,
@@ -31,7 +32,8 @@ const defaultCardProps: CardProps = {
     parallel: Parallel.Universal,
     editionCount: 1500,
     rarity: CardRarity.Rare,
-    type: CardType.Regular
+    type: CardType.Regular,
+    qrCodeContent: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 }
 
 const AppearTilt = styled(Tilt)`
@@ -46,13 +48,19 @@ const Canvas = styled.canvas`
     font-smooth: always;
 `
 
-const CardPreview: FunctionComponent<CardProps> = ({
+const qrDimensions: Dimensions = { width: 256, height: 256 }
+
+const CardPreview: FunctionComponent<
+    CardProps & { canvasRef: React.RefObject<HTMLCanvasElement> }
+> = ({
     image,
     name,
     parallel,
     editionCount,
     rarity,
-    type
+    type,
+    canvasRef,
+    qrCodeContent = defaultCardProps.qrCodeContent
 }) => {
     const imageUrl = useMemo(() => image && URL.createObjectURL(image), [image])
     const imageObject = useMemo(() => {
@@ -63,11 +71,40 @@ const CardPreview: FunctionComponent<CardProps> = ({
                 resolve(imageObject)
             }
         })
-    }, [image])
+    }, [imageUrl])
 
-    const canvasRef = useRef<HTMLCanvasElement>(null)
-
+    const dividerObject = useMemo(() => {
+        const dividerObject = new Image()
+        dividerObject.src = `/assets/card-dividers/${rarity
+            .toString()
+            .toLowerCase()}.png`
+        return new Promise<HTMLImageElement>((resolve) => {
+            dividerObject.onload = () => {
+                resolve(dividerObject)
+            }
+        })
+    }, [rarity])
     const dimensions = useMemo(() => cardDimensions[type], [type])
+
+    const qrImage = useMemo(() => {
+        const element = document.createElement("div")
+        new QRCode(element, {
+            text: qrCodeContent,
+            width: qrDimensions.width,
+            height: qrDimensions.height,
+            colorDark: "black",
+            colorLight: "transparent",
+            correctLevel: QRCode.CorrectLevel.M
+        })
+        const canvas = element.children[0] as HTMLCanvasElement
+        const ctx = canvas.getContext("2d")!
+        const gradient = cardGradients[rarity](ctx, qrDimensions)
+        ctx.globalCompositeOperation = "source-in"
+        ctx.fillStyle = gradient
+        ctx.fillRect(0, 0, qrDimensions.width + 120, qrDimensions.height + 120) // 100px margin for overflowing qr code
+        return canvas
+    }, [qrCodeContent, rarity])
+
     const renderImgWithin = async (
         ctx: CanvasRenderingContext2D,
         image: HTMLImageElement,
@@ -100,6 +137,8 @@ const CardPreview: FunctionComponent<CardProps> = ({
     const renderMasterpiece = async (ctx: CanvasRenderingContext2D) => {}
     const renderRegular = async (ctx: CanvasRenderingContext2D) => {
         ctx.clearRect(0, 0, dimensions.width, dimensions.height)
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, dimensions.width, dimensions.height)
         ctx.fillStyle = "white"
         ctx.font = 'lighter 20px "HK Grotesk"'
         ctx.fillText("FAN MADE", 73, 1407) // LABEL
@@ -129,6 +168,7 @@ const CardPreview: FunctionComponent<CardProps> = ({
         drawPill()
         ctx.resetTransform()
 
+        // image
         if (image) {
             renderImgWithin(
                 ctx,
@@ -139,20 +179,34 @@ const CardPreview: FunctionComponent<CardProps> = ({
                 1349
             )
         }
+
+        // divider
+        const divider = await dividerObject
+        ctx.drawImage(divider, 0, 1348)
+
+        // qr code
+        ctx.drawImage(qrImage, 871, 1409, 153, 153)
     }
-    const render = (ctx: CanvasRenderingContext2D) => {
-        if (type === CardType.Regular) {
-            renderRegular(ctx)
-        } else {
-            renderMasterpiece(ctx)
-        }
-    }
+    const render = useMemo(
+        () => (type === CardType.Regular ? renderRegular : renderMasterpiece),
+        [type] //eslint-disable-line react-hooks/exhaustive-deps
+    )
     useEffect(() => {
         const ctx = canvasRef.current?.getContext("2d")
         if (ctx) {
             render(ctx)
         }
-    }, [image, name, parallel, editionCount, rarity, type])
+    }, [
+        image,
+        name,
+        parallel,
+        editionCount,
+        rarity,
+        type,
+        qrImage,
+        canvasRef,
+        render
+    ])
 
     return (
         <AppearTilt
@@ -168,16 +222,11 @@ const CardPreview: FunctionComponent<CardProps> = ({
                         "0 4px 8px 0 rgba(255, 255, 255, 0.1), 0 6px 20px 0 rgba(255, 255, 255, 0.12)"
                 }}
             >
-                <img
-                    src={"https://i.ibb.co/ZVzFpBL/unnamed-1.png"}
-                    className="absolute top-0 left-0 w-full h-full rounded-sm opacity-50"
-                />
                 <Canvas
                     ref={canvasRef}
                     width={dimensions.width}
                     height={dimensions.height}
-                    className="relative z-0 w-full rounded-sm"
-                    style={{ height: "36rem" }}
+                    className="w-full rounded-sm h-96 lg:h-36rem"
                 />
             </div>
         </AppearTilt>
@@ -187,80 +236,135 @@ const CardPreview: FunctionComponent<CardProps> = ({
 const CardGeneratorPage: FunctionComponent<{}> = () => {
     const [name, setName] = useState(defaultCardProps.name)
     const [image, setImage] = useState(defaultCardProps.image)
-    const [cardType, setCardType] = useState(defaultCardProps.type)
+    //const [type, setType] = useState(defaultCardProps.type)
     const [parallel, setParallel] = useState(defaultCardProps.parallel)
+    const [rarity, setRarity] = useState(defaultCardProps.rarity)
+    const [qrCodeContent, setQRCodeContent] = useState<string>()
     const [editionCount, setEditionCount] = useState(
         defaultCardProps.editionCount
     )
-    const setCardTypeAndDimensionsIfNeeded = (type: CardType) => {
-        setCardType(type)
-        if (cardType !== type) {
+    /*
+    const setTypeAndDimensionsIfNeeded = (type: CardType) => {
+        setType(type)
+        if (type !== type) {
             // update canvas dimensions
         }
     }
+    */
+
+    const canvasRef = useRef<HTMLCanvasElement>(null)
+
+    const DownloadImageButton = (mobile: boolean) => (
+        <button
+            onClick={() => {
+                const image =
+                    canvasRef.current &&
+                    canvasRef.current
+                        .toDataURL("image/png")
+                        .replace("image/png", "image/octet-stream")
+                if (image) window.location.href = image
+            }}
+            className={classNames(
+                "relative py-3 overflow-hidden font-bold uppercase border-b-2 rounded-sm shadow-md group border-parallel-100 bg-opacity-5 bg-parallel-100",
+                mobile ? "lg:hidden w-full" : "hidden lg:block mt-auto"
+            )}
+        >
+            <span className="relative z-10 text-gray-200 transition duration-200 group-hover:text-parallel-200 group-hover:text-opacity-75">
+                Download image
+            </span>
+            <div className="absolute top-0 left-0 w-full h-full transition duration-200 origin-bottom transform scale-y-0 bg-parallel-100 group-hover:scale-y-100" />
+        </button>
+    )
+
     return (
         <div className="flex flex-col w-full text-white">
             <PageHeader
                 title="Card Generator"
                 description="Create your own fan-made cards."
             />
-            <div className="flex flex-col justify-center space-x-8 lg:flex-row">
-                <div className="flex flex-col w-full space-y-4 lg:max-w-md">
-                    <Input
-                        label="Name"
-                        type="text"
-                        placeholder="My amazing card"
-                        value={name}
-                        onChange={(e) => setName((e.target as any).value)}
-                    />
-                    <Input
-                        label="Image"
-                        type="image"
-                        value={image}
-                        onChange={setImage as any}
-                    />
-                    <Input
-                        label="Edition of"
-                        type="number"
-                        value={editionCount}
-                        onChange={(e) => {
-                            const n = parseInt((e.target as any).value)
-                            setEditionCount(typeof n !== "number" ? 0 : n)
-                        }}
-                    />
-                    <Toggle
-                        options={[CardType.Regular, CardType.Masterpiece]}
-                        label="Card Type"
-                        value={cardType}
-                        onChange={setCardTypeAndDimensionsIfNeeded}
-                    />
-                    <InputContainer label="Parallel">
-                        <Select
-                            value={parallel}
-                            options={parallels}
-                            onChange={setParallel}
-                            display={(parallel: Parallel) => (
-                                <div className="flex flex-row items-center space-x-4">
-                                    <div className="h-3.5 transform scale-75 -translate-y-1/2">
-                                        <ParallelLogo
-                                            mode="dark"
-                                            color={parallelColors[parallel]}
-                                        />
-                                    </div>
-                                    <span>{parallel}</span>
-                                </div>
-                            )}
+            <div className="flex flex-col items-center justify-center space-y-4 lg:space-y-0 lg:items-stretch lg:space-x-8 lg:flex-row">
+                <div className="flex flex-col w-full lg:max-w-md">
+                    <div className="flex flex-col w-full space-y-4">
+                        <Input
+                            label="Name"
+                            type="text"
+                            placeholder="My amazing card"
+                            value={name}
+                            onChange={(e) => setName((e.target as any).value)}
                         />
-                    </InputContainer>
+                        <Input
+                            label="Image"
+                            type="image"
+                            value={image}
+                            onChange={setImage as any}
+                        />
+                        <Input
+                            label="Edition of"
+                            type="number"
+                            value={editionCount}
+                            onChange={(e) => {
+                                const n = parseInt((e.target as any).value)
+                                setEditionCount(typeof n !== "number" ? 0 : n)
+                            }}
+                        />
+                        {/*
+                        <Toggle
+                            options={[CardType.Regular, CardType.Masterpiece]}
+                            label="Card Type"
+                            value={cardType}
+                            onChange={setCardTypeAndDimensionsIfNeeded}
+                        />
+                        */}
+                        <InputContainer label="Parallel">
+                            <Select
+                                value={parallel}
+                                options={parallels}
+                                onChange={setParallel}
+                                display={(parallel: Parallel) => (
+                                    <div className="flex flex-row items-center space-x-4">
+                                        <div className="h-3.5 transform scale-75 -translate-y-1/2">
+                                            <ParallelLogo
+                                                mode="dark"
+                                                color={parallelColors[parallel]}
+                                            />
+                                        </div>
+                                        <span>{parallel}</span>
+                                    </div>
+                                )}
+                            />
+                        </InputContainer>
+                        <InputContainer label="Rarity">
+                            <Select
+                                value={rarity}
+                                options={rarities}
+                                onChange={setRarity}
+                            />
+                        </InputContainer>
+                        <Input
+                            label="QR Code"
+                            type="text"
+                            value={qrCodeContent}
+                            onChange={(e) => {
+                                setQRCodeContent((e.target as any).value)
+                            }}
+                            placeholder="Any text content"
+                        />
+                    </div>
+                    {DownloadImageButton(false)}
                 </div>
                 <CardPreview
                     {...defaultCardProps}
                     name={name}
                     editionCount={editionCount}
                     image={image}
-                    type={cardType}
+                    rarity={rarity}
                     parallel={parallel}
+                    canvasRef={canvasRef}
+                    qrCodeContent={
+                        qrCodeContent || defaultCardProps.qrCodeContent
+                    }
                 />
+                {DownloadImageButton(true)}
             </div>
         </div>
     )
