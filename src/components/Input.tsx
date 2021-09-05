@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import React, { FunctionComponent, HTMLProps } from "react"
 import Dropzone from "react-dropzone"
 
@@ -25,7 +26,12 @@ const Input: FunctionComponent<
                         {({ getRootProps, getInputProps }) => (
                             <div className={inputClassName} {...getRootProps()}>
                                 <input {...getInputProps()} />
-                                <p className="font-normal normal-case">
+                                <p
+                                    className={classNames(
+                                        "font-normal normal-case",
+                                        !props.value && "text-gray-600"
+                                    )}
+                                >
                                     {props.value
                                         ? (props.value as any).name
                                         : "Drag image here or click"}
