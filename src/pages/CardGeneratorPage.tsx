@@ -147,7 +147,11 @@ const CardPreview: FunctionComponent<
             ctx.font = 'lighter 20px "HK Grotesk"'
             ctx.fillText("FAN MADE", 73, 1407) // LABEL
             ctx.font = 'bold 30px "HK Grotesk"'
-            ctx.fillText(name.toUpperCase(), 73, 1520) // NAME
+            ctx.fillText(
+                name.toUpperCase() + (rarity === CardRarity.SE ? " [SE]" : ""),
+                73,
+                1520
+            ) // NAME
             ctx.font = 'bold 56px "HK Grotesk"'
             ctx.fillText(parallel.toUpperCase(), 70, 1478) // PARALLEL
             ctx.font = 'lighter 20px "HK Grotesk"'
@@ -199,7 +203,8 @@ const CardPreview: FunctionComponent<
             imageObject,
             name,
             parallel,
-            qrImage
+            qrImage,
+            rarity
         ]
     )
     const render = useMemo(
