@@ -10,8 +10,11 @@ const inputClassName =
     "w-full px-4 py-3 bg-black rounded-sm shadow-inner text-base text-gray-200 placeholder-gray-600"
 
 const Input: FunctionComponent<
-    Omit<InputProps, "type"> & { type: InputProps["type"] | "image" }
-> = ({ label, ...props }) => {
+    Omit<InputProps, "type"> & {
+        type: InputProps["type"] | "image"
+        containerClassName?: string
+    }
+> = ({ label, className, containerClassName, ...props }) => {
     const element = (() => {
         switch (props.type) {
             case "image":
@@ -41,11 +44,20 @@ const Input: FunctionComponent<
                     </Dropzone>
                 )
             default:
-                return <input className={inputClassName} {...props} />
+                return (
+                    <input
+                        className={classNames(inputClassName, className)}
+                        {...props}
+                    />
+                )
         }
     })()
 
-    return <InputContainer label={label || ""}>{element}</InputContainer>
+    return (
+        <InputContainer className={containerClassName} label={label || ""}>
+            {element}
+        </InputContainer>
+    )
 }
 
 export default Input
