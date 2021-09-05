@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import QRCode from "easyqrcodejs"
-import React, { FunctionComponent, useMemo } from "react"
+import React, { FunctionComponent, useCallback, useMemo } from "react"
 import { useRef } from "react"
 import { useEffect } from "react"
 import { useState } from "react"
@@ -134,62 +134,77 @@ const CardPreview: FunctionComponent<
         )
         ctx.restore()
     }
-    const renderMasterpiece = async (ctx: CanvasRenderingContext2D) => {}
-    const renderRegular = async (ctx: CanvasRenderingContext2D) => {
-        ctx.clearRect(0, 0, dimensions.width, dimensions.height)
-        ctx.fillStyle = "black"
-        ctx.fillRect(0, 0, dimensions.width, dimensions.height)
-        ctx.fillStyle = "white"
-        ctx.font = 'lighter 20px "HK Grotesk"'
-        ctx.fillText("FAN MADE", 73, 1407) // LABEL
-        ctx.font = 'bold 30px "HK Grotesk"'
-        ctx.fillText(name.toUpperCase(), 73, 1520) // NAME
-        ctx.font = 'bold 56px "HK Grotesk"'
-        ctx.fillText(parallel.toUpperCase(), 70, 1478) // PARALLEL
-        ctx.font = 'lighter 20px "HK Grotesk"'
-        ctx.fillText(
-            `Edition of ${editionCount.toLocaleString("en-US")}`,
-            73,
-            1572
-        ) // EDITION #
+    const renderMasterpiece = useCallback(
+        async (ctx: CanvasRenderingContext2D) => {},
+        []
+    )
+    const renderRegular = useCallback(
+        async (ctx: CanvasRenderingContext2D) => {
+            ctx.clearRect(0, 0, dimensions.width, dimensions.height)
+            ctx.fillStyle = "black"
+            ctx.fillRect(0, 0, dimensions.width, dimensions.height)
+            ctx.fillStyle = "white"
+            ctx.font = 'lighter 20px "HK Grotesk"'
+            ctx.fillText("FAN MADE", 73, 1407) // LABEL
+            ctx.font = 'bold 30px "HK Grotesk"'
+            ctx.fillText(name.toUpperCase(), 73, 1520) // NAME
+            ctx.font = 'bold 56px "HK Grotesk"'
+            ctx.fillText(parallel.toUpperCase(), 70, 1478) // PARALLEL
+            ctx.font = 'lighter 20px "HK Grotesk"'
+            ctx.fillText(
+                `Edition of ${editionCount.toLocaleString("en-US")}`,
+                73,
+                1572
+            ) // EDITION #
 
-        const drawPill = () => {
-            ctx.beginPath()
-            ctx.fillStyle = parallelColors[parallel]
-            ctx.moveTo(40, 1460)
-            ctx.lineTo(47, 1440) // right line
-            ctx.arcTo(44, 1440, 44, 1436, 2)
-            ctx.lineTo(36, 1460) // left line
-            ctx.arcTo(35, 1464, 39, 1462, 2)
-            ctx.fill()
-        }
-        drawPill()
-        ctx.translate(4, 15)
-        drawPill()
-        ctx.resetTransform()
+            const drawPill = () => {
+                ctx.beginPath()
+                ctx.fillStyle = parallelColors[parallel]
+                ctx.moveTo(40, 1460)
+                ctx.lineTo(47, 1440) // right line
+                ctx.arcTo(44, 1440, 44, 1436, 2)
+                ctx.lineTo(36, 1460) // left line
+                ctx.arcTo(35, 1464, 39, 1462, 2)
+                ctx.fill()
+            }
+            drawPill()
+            ctx.translate(4, 15)
+            drawPill()
+            ctx.resetTransform()
 
-        // image
-        if (image) {
-            renderImgWithin(
-                ctx,
-                await imageObject,
-                0,
-                0,
-                dimensions.width,
-                1349
-            )
-        }
+            // image
+            if (image) {
+                renderImgWithin(
+                    ctx,
+                    await imageObject,
+                    0,
+                    0,
+                    dimensions.width,
+                    1349
+                )
+            }
 
-        // divider
-        const divider = await dividerObject
-        ctx.drawImage(divider, 0, 1348)
+            // divider
+            const divider = await dividerObject
+            ctx.drawImage(divider, 0, 1348)
 
-        // qr code
-        ctx.drawImage(qrImage, 871, 1409, 153, 153)
-    }
+            // qr code
+            ctx.drawImage(qrImage, 871, 1409, 153, 153)
+        },
+        [
+            dimensions,
+            dividerObject,
+            editionCount,
+            image,
+            imageObject,
+            name,
+            parallel,
+            qrImage
+        ]
+    )
     const render = useMemo(
         () => (type === CardType.Regular ? renderRegular : renderMasterpiece),
-        [type] //eslint-disable-line react-hooks/exhaustive-deps
+        [type, renderRegular, renderMasterpiece]
     )
     useEffect(() => {
         const ctx = canvasRef.current?.getContext("2d")
