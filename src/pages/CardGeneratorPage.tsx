@@ -274,15 +274,17 @@ const CardGeneratorPage: FunctionComponent<{}> = () => {
 
     const canvasRef = useRef<HTMLCanvasElement>(null)
 
+    const downloadImageLinkRef = useRef<HTMLAnchorElement>(null)
     const DownloadImageButton = (mobile: boolean) => (
         <Button
-            onClick={() => {
-                const image =
+            onClick={(e) => {
+                const imageURL =
                     canvasRef.current &&
-                    canvasRef.current
-                        .toDataURL("image/png")
-                        .replace("image/png", "image/octet-stream")
-                if (image) window.location.href = image
+                    canvasRef.current.toDataURL("image/jpg")
+                if (imageURL && downloadImageLinkRef.current) {
+                    downloadImageLinkRef.current.href = imageURL
+                    downloadImageLinkRef.current.click()
+                }
             }}
             className={mobile ? "lg:hidden w-full" : "hidden lg:block mt-auto"}
         >
@@ -379,6 +381,14 @@ const CardGeneratorPage: FunctionComponent<{}> = () => {
                     }
                 />
                 {DownloadImageButton(true)}
+                <a
+                    href="about:blank"
+                    className="hidden"
+                    download="card.jpg"
+                    ref={downloadImageLinkRef}
+                >
+                    Download
+                </a>
             </div>
         </div>
     )
