@@ -41,8 +41,7 @@
     "scripts": {
         "start": "craco start",
         "build": "craco build",
-        "test": "craco test",
-        "postbuild": "react-snap"
+        "test": "craco test"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -69,7 +68,7 @@
         "craco-raw-loader": "^1.0.1",
         "postcss": "^7",
         "raw-loader": "^4.0.2",
-        "react-snap": "^1.23.0",
+        "react-snap": "1.10.0",
         "react-use-scroll-position": "^2.0.0",
         "tailwindcss": "npm:@tailwindcss/postcss7-compat",
         "typechain": "^5.1.2"

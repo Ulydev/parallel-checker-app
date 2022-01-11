@@ -2,8 +2,7 @@ import React from "react"
 import { NavLink as _NavLink } from "react-router-dom"
 import styled from "styled-components"
 
-import ParallelToolsLink from "./ParallelToolsLink"
-
+/*
 const NavLink = styled(_NavLink)`
     :before {
         content: "";
@@ -25,11 +24,20 @@ const NavLink = styled(_NavLink)`
 
 const navLinkClass =
     "transition duration-200 text-opacity-25 hover:text-opacity-100 text-white"
+*/
 
 const Navbar = () => (
     <div className="flex flex-row items-center justify-between w-full h-20 px-4 -mb-20 lg:px-0 backdrop-filter backdrop-blur-md">
-        <ParallelToolsLink mode="light" />
-        <div className="flex flex-row items-center space-x-8 text-white font-inconsolata">
+        <a
+            href="https://parallel.life"
+            className="text-sm transition duration-300 text-parallel-100 font-inconsolata hover:opacity-50"
+        >
+            <span className="text-opacity-50 text-parallel-100">
+                {"<"} back to
+            </span>{" "}
+            <span className="underline">parallel.life</span>
+        </a>
+        {/*<div className="flex flex-row items-center space-x-8 text-white font-inconsolata">
             <NavLink
                 activeClassName="text-opacity-100"
                 className={navLinkClass}
@@ -46,7 +54,7 @@ const Navbar = () => (
             >
                 /cardgen
             </NavLink>
-        </div>
+        </div>*/}
     </div>
 )
 

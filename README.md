@@ -1,3 +1,3 @@
-# Parallel Tools
+# ParaSet Checker
 
-[parallel.tools](https://parallel.tools)
+[parasets.parallel.life](https://parasets.parallel.life)

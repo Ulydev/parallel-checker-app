@@ -1,14 +1,7 @@
 import { StoreProvider } from "easy-peasy"
-import CardGeneratorPage from "pages/CardGeneratorPage"
 import SetCheckerPage from "pages/SetCheckerPage"
-import React from "react"
 import { useEffect } from "react"
-import {
-    BrowserRouter as Router,
-    Redirect,
-    Route,
-    Switch
-} from "react-router-dom"
+import { BrowserRouter as Router } from "react-router-dom"
 
 import { useStoreActions } from "state/hooks"
 import store from "state/store"
@@ -46,6 +39,8 @@ const App = () => {
                 <div className="flex flex-col items-center w-full max-w-4xl mx-auto">
                     <Navbar />
                     <PageContentContainer>
+                        <SetCheckerPage />
+                        {/*
                         <Switch>
                             <Route
                                 path="/"
@@ -63,6 +58,7 @@ const App = () => {
                                 component={CardGeneratorPage}
                             />
                         </Switch>
+                        */}
                     </PageContentContainer>
                 </div>
                 <Footer />
