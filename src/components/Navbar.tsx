@@ -1,7 +1,3 @@
-import React from "react"
-import { NavLink as _NavLink } from "react-router-dom"
-import styled from "styled-components"
-
 /*
 const NavLink = styled(_NavLink)`
     :before {
@@ -27,10 +23,10 @@ const navLinkClass =
 */
 
 const Navbar = () => (
-    <div className="flex flex-row items-center justify-between w-full h-20 px-4 -mb-20 lg:px-0 backdrop-filter backdrop-blur-md">
+    <div className="flex flex-row items-center justify-between w-full h-20 px-4 -mb-20 lg:px-0">
         <a
             href="https://parallel.life"
-            className="text-sm transition duration-300 text-parallel-100 font-inconsolata hover:opacity-50"
+            className="z-10 text-sm transition duration-300 text-parallel-100 font-inconsolata hover:opacity-50"
         >
             <span className="text-opacity-50 text-parallel-100">
                 {"<"} back to
