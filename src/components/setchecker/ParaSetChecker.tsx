@@ -47,10 +47,10 @@ const getAllCardsBalances = async (
         (cardId) => (balanceByCardId[cardId] = { wallet: 0, vault: 0 })
     )
     walletCardsBalances.forEach((balance, i) => {
-        balanceByCardId[cardsIds[i]].wallet = balance
+        if (balance) balanceByCardId[cardsIds[i]].wallet = balance
     })
     vaultCardsBalances.forEach((balance, i) => {
-        balanceByCardId[cardsIds[i]].vault = balance
+        if (balance) balanceByCardId[cardsIds[i]].vault = balance
     })
     return balanceByCardId
 }
@@ -62,6 +62,27 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
     const totalCardsBalances = useStoreState(
         (store) => store.totalCardsBalances
     )
+    const cardsBalances = useStoreState((store) => store.cardsBalances)
+    const [walletCards, vaultCards] = useMemo(() => {
+        if (!cardsBalances) return [0, 0]
+        console.log(
+            Object.values(cardsBalances).reduce(
+                ([walletCards, vaultCards], { wallet, vault }) => [
+                    walletCards + wallet,
+                    vaultCards + vault
+                ],
+                [0, 0]
+            ),
+            cardsBalances
+        )
+        return Object.values(cardsBalances).reduce(
+            ([walletCards, vaultCards], { wallet, vault }) => [
+                walletCards + wallet,
+                vaultCards + vault
+            ],
+            [0, 0]
+        )
+    }, [cardsBalances])
     const setCardsBalances = useStoreActions(
         (actions) => actions.setCardsBalances
     )
@@ -85,9 +106,22 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
         setLoading(false)
     }
 
-    const message = !!totalCardsBalances
-        ? "Completed sets:"
-        : error || (loading ? "Loading..." : <>&nbsp;</>)
+    const message = !!totalCardsBalances ? (
+        <>
+            {walletCards + vaultCards} total cards ({vaultCards} in{" "}
+            <a
+                href="https://parallel.life/faq/"
+                className="underline"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Vault
+            </a>
+            ). Completed sets:
+        </>
+    ) : (
+        error || (loading ? "Loading..." : <>&nbsp;</>)
+    )
 
     const setsCompletion = useMemo(() => {
         const result: Record<string, SetCompletion> = {}
