@@ -56,9 +56,14 @@ export const getCardsBalancesInVault = async (
     tokenIds: string[],
     provider: Provider
 ) => {
+    const corsPrefix =
+        process.env.NODE_ENV === "development"
+            ? "https://thingproxy.freeboard.io/fetch/"
+            : ""
     const json: { vault_cards: { id: number; quantity: number }[] } = await (
         await fetch(
-            "https://thingproxy.freeboard.io/fetch/https://parallel.life/api/v1/cards/my-cards/?cardType=vault",
+            corsPrefix +
+                "https://parallel.life/api/v1/cards/my-cards/?cardType=vault",
             { headers: { "X-Current-Eth-Address": account } }
         )
     ).json()
