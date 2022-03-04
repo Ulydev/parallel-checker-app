@@ -7,6 +7,11 @@ import pd2artcardtxt from "./sets/pd2artcard.txt"
 import pd2cardbacktxt from "./sets/pd2cardback.txt"
 import pd2pltxt from "./sets/pd2pl.txt"
 import pd2setxt from "./sets/pd2se.txt"
+import pd3artcardtxt from "./sets/pd3artcard.txt"
+import pd3cardbacktxt from "./sets/pd3cardback.txt"
+import pd3fetxt from "./sets/pd3fe.txt"
+import pd3pltxt from "./sets/pd3pl.txt"
+import pd3setxt from "./sets/pd3se.txt"
 import ps15txt from "./sets/ps15.txt"
 import ps15artcardtxt from "./sets/ps15artcard.txt"
 import ps15cardbacktxt from "./sets/ps15cardback.txt"
@@ -34,5 +39,11 @@ export const sets = {
     pd2pl: parseSet(pd2pltxt),
     pd2se: parseSet(pd2setxt),
     pd2artcard: parseSet(pd2artcardtxt),
-    pd2cardback: parseSet(pd2cardbacktxt)
+    pd2cardback: parseSet(pd2cardbacktxt),
+    // pd3
+    pd3: parseSet(pd3fetxt),
+    pd3se: parseSet(pd3setxt),
+    pd3pl: parseSet(pd3pltxt),
+    pd3cardback: parseSet(pd3cardbacktxt),
+    pd3artcard: parseSet(pd3artcardtxt)
 }
