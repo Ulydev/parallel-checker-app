@@ -1,9 +1,11 @@
 import { Provider } from "@ethersproject/abstract-provider"
 import { BigNumber } from "ethers"
 import { formatEther } from "ethers/lib/utils"
-import { ParallelToken__factory } from "./ParallelToken__factory"
-
 import { RateLimiter } from "limiter"
+
+import { Vault__factory } from "web3/abis/Vault__factory"
+
+import { ParallelToken__factory } from "./ParallelToken__factory"
 
 export const PARALLEL_TOKEN_ADDRESS =
     "0x76be3b62873462d2142405439777e971754e8e77"
@@ -46,6 +48,31 @@ export const getCardsBalances = async (
             ))
         )
         .map((b) => b.toNumber())
+}
+
+const VAULT_ADDRESS = "0x74795F0bC4500AAA504867F603b41B623f40f299"
+export const getCardsBalancesInVault = async (
+    account: string,
+    tokenIds: string[],
+    provider: Provider
+) => {
+    const json: { vault_cards: { id: number; quantity: number }[] } = await (
+        await fetch(
+            "https://thingproxy.freeboard.io/fetch/https://parallel.life/api/v1/cards/my-cards/?cardType=vault",
+            { headers: { "X-Current-Eth-Address": account } }
+        )
+    ).json()
+    const accountClaims = await Vault__factory.connect(
+        VAULT_ADDRESS,
+        provider
+    ).getAccountClaims(account, Object.keys(json.vault_cards))
+    const balanceByTokenId: Record<string, number> = {}
+    json.vault_cards.forEach(
+        (card, i) =>
+            (balanceByTokenId[card.id] =
+                card.quantity - accountClaims[i].toNumber()) // remove claimed cards
+    )
+    return tokenIds.map((tokenId) => balanceByTokenId[tokenId])
 }
 
 export const getCardsPricesBatch = async (tokenIds: string[]) => {

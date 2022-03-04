@@ -9,7 +9,7 @@ import { useStoreActions, useStoreState } from "state/hooks"
 
 import { cards } from "data/cards"
 import { sets } from "data/sets"
-import { getCardsBalances } from "data/utils"
+import { getCardsBalances, getCardsBalancesInVault } from "data/utils"
 
 import Button from "components/Button"
 import Input from "components/Input"
@@ -19,21 +19,38 @@ import SetCompletionView, {
 
 const getAllCardsBalances = async (
     account: string
-): Promise<Record<string, number>> => {
+): Promise<Record<string, { wallet: number; vault: number }>> => {
     const provider = new providers.MulticallProvider(
         new ethers.providers.JsonRpcProvider(
             process.env.REACT_APP_JSON_RPC_ENDPOINT
         )
     )
+    try {
+        account = await provider.resolveName(account)
+    } catch (e) {
+        throw new Error("Could not resolve ENS name")
+    }
     const cardsIds = Object.keys(cards)
-    const cardsBalances = await getCardsBalances(
+    const walletCardsBalances = await getCardsBalances(
         account,
         [...cardsIds],
         provider
     )
-    const balanceByCardId: Record<string, number> = {}
-    cardsBalances.forEach((balance, i) => {
-        balanceByCardId[cardsIds[i]] = balance
+    const vaultCardsBalances = await getCardsBalancesInVault(
+        account,
+        [...cardsIds],
+        provider
+    )
+    const balanceByCardId: Record<string, { wallet: number; vault: number }> =
+        {}
+    cardsIds.forEach(
+        (cardId) => (balanceByCardId[cardId] = { wallet: 0, vault: 0 })
+    )
+    walletCardsBalances.forEach((balance, i) => {
+        balanceByCardId[cardsIds[i]].wallet = balance
+    })
+    vaultCardsBalances.forEach((balance, i) => {
+        balanceByCardId[cardsIds[i]].vault = balance
     })
     return balanceByCardId
 }
@@ -42,7 +59,9 @@ const isENSDomain = (address: string) =>
     address.includes(".eth") && address.split(".eth")[0].length > 0
 
 const ParaSetChecker: FunctionComponent<{}> = () => {
-    const cardsBalances = useStoreState((store) => store.cardsBalances)
+    const totalCardsBalances = useStoreState(
+        (store) => store.totalCardsBalances
+    )
     const setCardsBalances = useStoreActions(
         (actions) => actions.setCardsBalances
     )
@@ -66,24 +85,24 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
         setLoading(false)
     }
 
-    const message = !!cardsBalances
+    const message = !!totalCardsBalances
         ? "Completed sets:"
         : error || (loading ? "Loading..." : <>&nbsp;</>)
 
     const setsCompletion = useMemo(() => {
         const result: Record<string, SetCompletion> = {}
-        if (cardsBalances) {
+        if (totalCardsBalances) {
             Object.keys(sets).forEach((setName) => {
                 const set: Set<string> = (sets as any)[setName]
                 const missingCardsCount = Array.from(set)
-                    .map((tokenId) => cardsBalances[tokenId] > 0)
+                    .map((tokenId) => totalCardsBalances[tokenId] > 0)
                     .map((b) => (b === true ? 0 : 1) as number)
                     .reduce((a, b) => a + b)
                 const completed =
                     missingCardsCount > 0
                         ? 0
                         : Array.from(set)
-                              .map((tokenId) => cardsBalances[tokenId])
+                              .map((tokenId) => totalCardsBalances[tokenId])
                               .reduce((a, b) => Math.min(a, b))
                 result[setName] = {
                     missingCardsCount,
@@ -92,7 +111,7 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
             })
         }
         return result
-    }, [cardsBalances])
+    }, [totalCardsBalances])
 
     return (
         <div className="flex flex-col w-full">

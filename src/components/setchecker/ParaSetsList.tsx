@@ -13,7 +13,9 @@ const ParaSetView: FunctionComponent<{ set: Set<string>; setName: string }> = ({
     set,
     setName
 }) => {
-    const cardsBalances = useStoreState((state) => state.cardsBalances)
+    const totalCardsBalances = useStoreState(
+        (state) => state.totalCardsBalances
+    )
     const cardsPrices = useStoreState((state) => state.cardsPrices)
     const setPrice = useMemo(
         () =>
@@ -48,7 +50,9 @@ const ParaSetView: FunctionComponent<{ set: Set<string>; setName: string }> = ({
                             key={card.token_id}
                             card={card}
                             owned={
-                                cardsBalances ? cardsBalances[card.token_id] : 0
+                                totalCardsBalances
+                                    ? totalCardsBalances[card.token_id]
+                                    : 0
                             }
                             price={
                                 cardsPrices
