@@ -65,16 +65,6 @@ const ParaSetChecker: FunctionComponent<{}> = () => {
     const cardsBalances = useStoreState((store) => store.cardsBalances)
     const [walletCards, vaultCards] = useMemo(() => {
         if (!cardsBalances) return [0, 0]
-        console.log(
-            Object.values(cardsBalances).reduce(
-                ([walletCards, vaultCards], { wallet, vault }) => [
-                    walletCards + wallet,
-                    vaultCards + vault
-                ],
-                [0, 0]
-            ),
-            cardsBalances
-        )
         return Object.values(cardsBalances).reduce(
             ([walletCards, vaultCards], { wallet, vault }) => [
                 walletCards + wallet,
